@@ -5,8 +5,8 @@ import argparse
 
 parser = argparse.ArgumentParser(description='split pdf')
 parser.add_argument('-f', '--pdf', help='input pdf')
-parser.add_argument('-s', '--start', type=int, default=2, help='start page')
-parser.add_argument('-e', '--end', type=int, default=0, help='end page')
+parser.add_argument('-s', '--start', type=int, default=2, help='first page')
+parser.add_argument('-e', '--end', type=int, default=0, help='last page')
 
 
 def do_pdf_split(path, start_page, end_page):
@@ -18,7 +18,8 @@ def do_pdf_split(path, start_page, end_page):
     page_end = end_page if end_page else len(pages)
     for p_num in range(page_start-1, page_end):
         pdf_writer.add_page(pages[p_num])
-    out_file_name = f".\\{base_name}_{page_start}-{page_end}.pdf"
+    base_dir = os.path.dirname(os.path.abspath(path))
+    out_file_name = os.path.join(base_dir, f"{base_name}_{page_start}-{page_end}.pdf")
     with open(out_file_name, 'wb') as out:
         pdf_writer.write(out)
 
